@@ -28,10 +28,6 @@ bool isSorted(const std::vector<int> &seq);
  * @param seq séquence à trier
  * @param pManager Pointeur sur le ThreadManager utilisé pour accéder à l'interface
  */
-<<<<<<< HEAD
 void bogosort(std::vector<int> seq, ThreadManager* pManager, int* counter_finish, std::vector<int>* sorted_sequence);
-=======
-void bogosort(std::vector<int> seq, ThreadManager *pManager, int &counter_finish, std::vector<int> &sorted_sequence);
->>>>>>> 0eb58c20d72967b7c274c5ec3d9f6ef32ef8a22b
 
 #endif // MYTHREAD_H
