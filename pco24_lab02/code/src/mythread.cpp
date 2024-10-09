@@ -39,9 +39,10 @@ void bogosort(std::vector<int> seq, ThreadManager* pManager, int &counter_finish
     // Parcourir toutes les permutations possibles
     for (int i = 0; i < num_permutations; ++i) {
         // Vérifier si le gestionnaire de thread a demandé un arrêt
-        if(pManager->isStopRequested()) {
-            return;
-        }
+        
+        //if(pManager->isStopRequested()) {
+        //    return;
+        //}
 
         // Générer la i-ème permutation déterministe
         std::vector<int> perm = getPermutation(seq, i);

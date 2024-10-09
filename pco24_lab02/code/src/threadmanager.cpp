@@ -8,8 +8,8 @@
 
 
 ThreadManager::ThreadManager(QObject *parent) :
-    QObject(parent)
-{}
+    QObject(parent) {
+}
 
 
 /**
@@ -19,29 +19,27 @@ ThreadManager::ThreadManager(QObject *parent) :
  * @return séquence triée
  */
 std::vector<int> ThreadManager::startSorting(
-        std::vector<int> seq,
-        unsigned int nbThreads
-)
-{
+    std::vector<int> seq,
+    unsigned int nbThreads
+) {
     finished = false;
-    
+
     // TODO création des threads et du vecteur de résultats
     std::vector<PcoThread> threads;
     std::vector<int> sorted_seq = seq;
     int counter_finished = 0;
 
     // TODO lancement des threads avec la fonction Bogosort
-    for(int i = 0; i < nbThreads; i++){
+    for (int i = 0; i < nbThreads; i++) {
         threads.emplace_back(new PcoThread(bogosort, seq, this, &counter_finished, &sorted_seq));
     }
 
     // TODO arrêt des threads et récupération du tableau trié
-    while(!finished){
+    while (!finished) {
         if (counter_finished == nbThreads || sorted_seq != seq)
             finished = true;
     }
-    for (auto& th : threads)
-    {
+    for (auto &th : threads) {
         th.requestStop();
         th.join();
     }
@@ -51,7 +49,6 @@ std::vector<int> ThreadManager::startSorting(
 }
 
 
-void ThreadManager::incrementPercentComputed(double percentComputed)
-{
+void ThreadManager::incrementPercentComputed(double percentComputed) {
     emit sig_incrementPercentComputed(percentComputed);
 }
