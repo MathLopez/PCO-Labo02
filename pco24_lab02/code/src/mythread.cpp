@@ -1,3 +1,4 @@
+
 #include "mythread.h"
 #include <iostream>
 
@@ -31,15 +32,16 @@ bool isSorted(const std::vector<int>& seq) {
     return true;
 }
 
-void bogosort(std::vector<int> seq, ThreadManager* pManager, int &counter_finish, std::vector<int> &sorted_sequence)
+void bogosort(std::vector<int> seq, ThreadManager* pManager, int* counter_finish, std::vector<int>* sorted_sequence)
 {
     int n = seq.size();
+    // TODO: num_permutation = perm total / nb threads
     int num_permutations = factorial(n);  // Nombre total de permutations
 
     // Parcourir toutes les permutations possibles
     for (int i = 0; i < num_permutations; ++i) {
         // Vérifier si le gestionnaire de thread a demandé un arrêt
-        if(pManager->isStopRequested()) {
+        if(PcoThread::thisThread()->stopRequested()) {
             return;
         }
 
@@ -47,12 +49,12 @@ void bogosort(std::vector<int> seq, ThreadManager* pManager, int &counter_finish
         std::vector<int> perm = getPermutation(seq, i);
 
         // Exemple de mise à jour de la barre de progression
-        pManager->incrementPercentComputed((double)i / num_permutations * 100.0);
+        pManager->incrementPercentComputed((double)i / num_permutations * 100.0); // TODO: incrémenter et pas set
 
         // Vérifier si cette permutation est triée
         if (isSorted(perm)) {
-            sorted_sequence = perm;
-            ++counter_finish;  // Incrémenter le compteur une fois trié
+            *sorted_sequence = perm;
+            ++(*counter_finish);  // Incrémenter le compteur une fois trié
             return;
         }
     }
