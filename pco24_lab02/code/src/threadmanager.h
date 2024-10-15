@@ -36,6 +36,9 @@ public:
      */
     ThreadManager(QObject *parent);
 
+    int counter_finished;
+    std::vector<int> sorted_seq;
+
     /**
      * @brief startSorting tâche qui s'occupe de générer la séquence à trier et de
      * démarrer le tri.

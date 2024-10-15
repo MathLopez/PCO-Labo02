@@ -22,39 +22,28 @@ std::vector<int> getPermutation(const std::vector<int>& sequence, int k) {
     return permutation;
 }
 
-// Fonction pour vérifier si une séquence est triée
-bool isSorted(const std::vector<int>& seq) {
-    for (size_t i = 1; i < seq.size(); ++i) {
-        if (seq[i - 1] > seq[i]) {
-            return false;
-        }
-    }
-    return true;
-}
-
-void bogosort(std::vector<int> seq, ThreadManager* pManager, int* counter_finish, std::vector<int>* sorted_sequence)
+void bogosort(std::vector<int> seq, ThreadManager* pManager, int numThreads, int id)
 {
     int n = seq.size();
-    // TODO: num_permutation = perm total / nb threads
     int num_permutations = factorial(n);  // Nombre total de permutations
-
+    int k;
     // Parcourir toutes les permutations possibles
-    for (int i = 0; i < num_permutations; ++i) {
+    for (int i = 0; (k = i * numThreads + id) < num_permutations; ++i) {
         // Vérifier si le gestionnaire de thread a demandé un arrêt
         if(PcoThread::thisThread()->stopRequested()) {
             return;
         }
 
-        // Générer la i-ème permutation déterministe
-        std::vector<int> perm = getPermutation(seq, i);
+        // Générer la k-ème permutation déterministe
+        std::vector<int> perm = getPermutation(seq, k);
 
-        // Exemple de mise à jour de la barre de progression
-        pManager->incrementPercentComputed((double)i / num_permutations * 100.0); // TODO: incrémenter et pas set
+        // Mise à jour de la barre de progression
+        pManager->incrementPercentComputed((double)1 / num_permutations);
 
         // Vérifier si cette permutation est triée
-        if (isSorted(perm)) {
-            *sorted_sequence = perm;
-            ++(*counter_finish);  // Incrémenter le compteur une fois trié
+        if (std::is_sorted(perm.begin(), perm.end())) {
+            pManager->sorted_seq = perm;
+            ++(pManager->counter_finished);  // Indique au pManger que le thread a fini sa tache
             return;
         }
     }

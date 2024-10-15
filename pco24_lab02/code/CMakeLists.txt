@@ -25,7 +25,7 @@ file(GLOB_RECURSE FORMS "ui/*.ui")
 add_executable(pco_bogosort ${SOURCES} ${HEADERS} ${FORMS})
 
 if (Qt5_FOUND)
-    target_link_libraries(pco_bogosort PRIVATE Qt5::Core Qt5::Gui Qt5::Concurrent Qt5::Widgets -lpcosynchro -pthread)
+    target_link_libraries(pco_bogosort PRIVATE Qt5::Core Qt5::Gui Qt5::Concurrent Qt5::Widgets -lpcosynchro)
 else()
     target_link_libraries(pco_bogosort PRIVATE Qt6::Core Qt6::Gui Qt6::Concurrent Qt6::Widgets -lpcosynchro)
 endif()
